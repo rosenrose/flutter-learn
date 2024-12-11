@@ -1,6 +1,11 @@
 # flutter_learn
 
-A new Flutter project.
+빌드 오류 수정
+```
+cd android
+./gradlew wrapper --gradle-version=8.7
+./gradlew clean build
+```
 
 ## Getting Started
 
