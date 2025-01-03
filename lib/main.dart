@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_learn/widgets/Button.dart';
 
 void main() {
   var nico = Player(name: "nico");
@@ -12,20 +13,20 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       home: Scaffold(
-        backgroundColor: const Color(0xFF181818),
+        backgroundColor: Color(0xFF181818),
         body: Padding(
-          padding: const EdgeInsets.symmetric(
+          padding: EdgeInsets.symmetric(
             horizontal: 40,
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(
+              SizedBox(
                 height: 80,
               ),
-              const Row(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Column(
@@ -50,20 +51,20 @@ class App extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(
+              SizedBox(
                 height: 120,
               ),
-              const Text(
+              Text(
                 "Total Balance",
                 style: TextStyle(
                   color: Colors.white70,
                   fontSize: 22,
                 ),
               ),
-              const SizedBox(
+              SizedBox(
                 height: 2,
               ),
-              const Text(
+              Text(
                 "\$5,194,482",
                 style: TextStyle(
                   color: Colors.white,
@@ -71,34 +72,21 @@ class App extends StatelessWidget {
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              const SizedBox(
-                height: 30,
+              SizedBox(
+                height: 15,
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFF2B33A),
-                      borderRadius: BorderRadius.circular(45),
-                    ),
-                    child: const Padding(
-                      padding: EdgeInsets.symmetric(
-                        vertical: 20,
-                        horizontal: 40,
-                      ),
-                      child: Text(
-                        "Transfer",
-                        style: TextStyle(
-                          fontSize: 20,
-                        ),
-                      ),
-                    ),
+                  Button(
+                    text: "Transfer",
+                    textColor: Colors.black,
+                    bgColor: Color(0xFFF2B33A),
                   ),
-                  Container(
-                    child: const Text(
-                      "Request",
-                    ),
+                  Button(
+                    text: "Request",
+                    textColor: Colors.white,
+                    bgColor: Color(0xFF1F2123),
                   ),
                 ],
               ),
