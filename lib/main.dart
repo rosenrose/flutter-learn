@@ -14,21 +14,21 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       home: Scaffold(
-        backgroundColor: const Color(0xFF181818),
+        backgroundColor: Color(0xFF181818),
         body: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.symmetric(
+            padding: EdgeInsets.symmetric(
               horizontal: 40,
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(
+                SizedBox(
                   height: 60,
                 ),
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Column(
@@ -53,20 +53,20 @@ class App extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(
+                SizedBox(
                   height: 40,
                 ),
-                const Text(
+                Text(
                   "Total Balance",
                   style: TextStyle(
                     color: Colors.white70,
                     fontSize: 22,
                   ),
                 ),
-                const SizedBox(
+                SizedBox(
                   height: 2,
                 ),
-                const Text(
+                Text(
                   "\$5,194,482",
                   style: TextStyle(
                     color: Colors.white,
@@ -74,10 +74,10 @@ class App extends StatelessWidget {
                     fontWeight: FontWeight.w600,
                   ),
                 ),
-                const SizedBox(
+                SizedBox(
                   height: 15,
                 ),
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Button(
@@ -92,10 +92,10 @@ class App extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(
+                SizedBox(
                   height: 30,
                 ),
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
@@ -116,33 +116,30 @@ class App extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(
+                SizedBox(
                   height: 2,
                 ),
-                const CurrencyCard(
+                CurrencyCard(
                   currencyName: "Euro",
                   currencyCode: "EUR",
                   currencyAmt: 6.428,
                   currencyIcon: Icons.euro_rounded,
+                  order: 1,
                 ),
-                Transform.translate(
-                  offset: const Offset(0, -25),
-                  child: const CurrencyCard(
-                    currencyName: "Dollar",
-                    currencyCode: "USD",
-                    currencyAmt: 10.998,
-                    currencyIcon: Icons.attach_money_rounded,
-                    isLightMode: true,
-                  ),
+                CurrencyCard(
+                  currencyName: "Dollar",
+                  currencyCode: "USD",
+                  currencyAmt: 10.998,
+                  currencyIcon: Icons.attach_money_rounded,
+                  order: 2,
+                  isLightMode: true,
                 ),
-                Transform.translate(
-                  offset: const Offset(0, -50),
-                  child: const CurrencyCard(
-                    currencyName: "Bitcoin",
-                    currencyCode: "BTC",
-                    currencyAmt: 9.785,
-                    currencyIcon: Icons.currency_bitcoin_rounded,
-                  ),
+                CurrencyCard(
+                  currencyName: "Bitcoin",
+                  currencyCode: "BTC",
+                  currencyAmt: 9.785,
+                  currencyIcon: Icons.currency_bitcoin_rounded,
+                  order: 3,
                 ),
               ],
             ),
