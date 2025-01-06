@@ -18,11 +18,16 @@ class App extends StatefulWidget {
 
 class _AppState extends State<App> {
   int counter = 0;
+  List<int> nums = [99];
 
   void addCount(int cnt) {
-    setState(() {
-      counter += cnt;
-    });
+    counter += cnt;
+
+    if (nums.length % 3 == 0) {
+      setState(() {});
+    }
+
+    print(nums);
   }
 
   @override
@@ -51,6 +56,7 @@ class _AppState extends State<App> {
                   IconButton(
                     onPressed: () {
                       addCount(1);
+                      nums.add(nums.length);
                     },
                     icon: const Icon(
                       Icons.add_circle_rounded,
@@ -60,12 +66,22 @@ class _AppState extends State<App> {
                   IconButton(
                     onPressed: () {
                       addCount(-1);
+
+                      if (nums.isNotEmpty) {
+                        nums.removeLast();
+                      }
                     },
                     icon: const Icon(
                       Icons.remove_circle_rounded,
                       size: 70,
                     ),
                   ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  for (var num in nums) Text("$num "),
                 ],
               ),
             ],
