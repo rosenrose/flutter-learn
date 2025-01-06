@@ -17,76 +17,44 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
-  int counter = 0;
-  List<int> nums = [99];
-
-  void addCount(int cnt) {
-    counter += cnt;
-
-    if (nums.length % 3 == 0) {
-      setState(() {});
-    }
-
-    print(nums);
-  }
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
+      theme: ThemeData(
+        textTheme: const TextTheme(
+          titleLarge: TextStyle(
+            color: Colors.red,
+            fontSize: 30,
+          ),
+        ),
+      ),
+      home: const Scaffold(
+        backgroundColor: Color(0xFFF4EDDB),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text(
-                "Click Count",
-                style: TextStyle(
-                  fontSize: 30,
-                ),
-              ),
-              Text(
-                "$counter",
-                style: const TextStyle(
-                  fontSize: 30,
-                ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  IconButton(
-                    onPressed: () {
-                      addCount(1);
-                      nums.add(nums.length);
-                    },
-                    icon: const Icon(
-                      Icons.add_circle_rounded,
-                      size: 70,
-                    ),
-                  ),
-                  IconButton(
-                    onPressed: () {
-                      addCount(-1);
-
-                      if (nums.isNotEmpty) {
-                        nums.removeLast();
-                      }
-                    },
-                    icon: const Icon(
-                      Icons.remove_circle_rounded,
-                      size: 70,
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  for (var num in nums) Text("$num "),
-                ],
-              ),
+              MyLargeTitle(),
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class MyLargeTitle extends StatelessWidget {
+  const MyLargeTitle({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      "My Large Title",
+      style: TextStyle(
+        fontSize: 30,
+        color: Theme.of(context).textTheme.titleLarge!.color,
       ),
     );
   }
