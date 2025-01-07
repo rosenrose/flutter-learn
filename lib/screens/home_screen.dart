@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -8,6 +10,30 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  // int totalSeconds = 60 * 25;
+  static const int initSeconds = 3;
+  int totalSeconds = initSeconds;
+  int pomodoroCnt = 0;
+  late Timer timer;
+
+  void onTick(Timer timer) {
+    setState(() {
+      if (totalSeconds <= 0) {
+        timer.cancel();
+        totalSeconds = initSeconds;
+        pomodoroCnt++;
+
+        return;
+      }
+
+      totalSeconds--;
+    });
+  }
+
+  void onStartPressed() {
+    timer = Timer.periodic(const Duration(seconds: 1), onTick);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,7 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Container(
               alignment: Alignment.bottomCenter,
               child: Text(
-                "25:00",
+                "${(totalSeconds / 60).floor().toString().padLeft(2, '0')}:${(totalSeconds % 60).toString().padLeft(2, '0')}",
                 style: TextStyle(
                   color: Theme.of(context).cardColor,
                   fontSize: 90,
@@ -37,7 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   size: 120,
                   color: Theme.of(context).cardColor,
                 ),
-                onPressed: () {},
+                onPressed: onStartPressed,
               ),
             ),
           ),
@@ -49,6 +75,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Container(
                     decoration: BoxDecoration(
                       color: Theme.of(context).cardColor,
+                      borderRadius: BorderRadius.circular(30),
                     ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -65,7 +92,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ),
                         Text(
-                          "0",
+                          "$pomodoroCnt",
                           style: TextStyle(
                             color: Theme.of(context)
                                 .textTheme
