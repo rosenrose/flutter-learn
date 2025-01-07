@@ -10,10 +10,10 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  // int totalSeconds = 60 * 25;
-  static const int initSeconds = 3;
+  static const int initSeconds = 60 * 25;
   int totalSeconds = initSeconds;
   int pomodoroCnt = 0;
+  bool isRunning = false;
   late Timer timer;
 
   void onTick(Timer timer) {
@@ -22,6 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
         timer.cancel();
         totalSeconds = initSeconds;
         pomodoroCnt++;
+        isRunning = false;
 
         return;
       }
@@ -30,8 +31,16 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  void onStartPressed() {
-    timer = Timer.periodic(const Duration(seconds: 1), onTick);
+  void onPressed() {
+    if (isRunning) {
+      timer.cancel();
+    } else {
+      timer = Timer.periodic(const Duration(milliseconds: 1), onTick);
+    }
+
+    setState(() {
+      isRunning = !isRunning;
+    });
   }
 
   @override
@@ -59,11 +68,13 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Center(
               child: IconButton(
                 icon: Icon(
-                  Icons.play_circle_outline,
+                  isRunning
+                      ? Icons.pause_circle_outline
+                      : Icons.play_circle_outline,
                   size: 120,
                   color: Theme.of(context).cardColor,
                 ),
-                onPressed: onStartPressed,
+                onPressed: onPressed,
               ),
             ),
           ),
