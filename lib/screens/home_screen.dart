@@ -17,30 +17,51 @@ class _HomeScreenState extends State<HomeScreen> {
   bool isRunning = false;
   late Timer timer;
 
-  void onTick(Timer timer) {
+  void onTimerPressed() {
+    if (isRunning) {
+      cancelTimer();
+      return;
+    }
+
+    timer = Timer.periodic(const Duration(milliseconds: 1), tick);
+
     setState(() {
-      if (totalSeconds <= 0) {
-        timer.cancel();
-        totalSeconds = initSeconds;
+      isRunning = true;
+    });
+  }
+
+  void cancelTimer() {
+    timer.cancel();
+    setState(() {
+      isRunning = false;
+    });
+  }
+
+  void tick(Timer timer) {
+    if (totalSeconds <= 0) {
+      onTimerReset();
+      setState(() {
         pomodoroCnt++;
-        isRunning = false;
+      });
 
-        return;
-      }
+      return;
+    }
 
+    setState(() {
       totalSeconds--;
     });
   }
 
-  void onPressed() {
-    if (isRunning) {
-      timer.cancel();
-    } else {
-      timer = Timer.periodic(const Duration(milliseconds: 1), onTick);
-    }
-
+  void onTimerReset() {
+    cancelTimer();
     setState(() {
-      isRunning = !isRunning;
+      totalSeconds = initSeconds;
+    });
+  }
+
+  void onCounterReset() {
+    setState(() {
+      pomodoroCnt = 0;
     });
   }
 
@@ -73,15 +94,36 @@ class _HomeScreenState extends State<HomeScreen> {
           Flexible(
             flex: 3,
             child: Center(
-              child: IconButton(
-                icon: Icon(
-                  isRunning
-                      ? Icons.pause_circle_outline
-                      : Icons.play_circle_outline,
-                  size: 120,
-                  color: Theme.of(context).cardColor,
-                ),
-                onPressed: onPressed,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  IconButton(
+                    icon: Icon(
+                      isRunning
+                          ? Icons.pause_circle_outline
+                          : Icons.play_circle_outline,
+                      size: 80,
+                      color: Theme.of(context).cardColor,
+                    ),
+                    onPressed: onTimerPressed,
+                  ),
+                  IconButton(
+                    icon: Icon(
+                      Icons.restore_outlined,
+                      size: 80,
+                      color: Theme.of(context).cardColor,
+                    ),
+                    onPressed: onTimerReset,
+                  ),
+                  IconButton(
+                    icon: Icon(
+                      Icons.restore_page_outlined,
+                      size: 80,
+                      color: Theme.of(context).cardColor,
+                    ),
+                    onPressed: onCounterReset,
+                  ),
+                ],
               ),
             ),
           ),
