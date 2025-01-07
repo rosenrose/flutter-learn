@@ -10,7 +10,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  static const int initSeconds = 60 * 25;
+  static const int initSeconds = 25 * 60;
+
   int totalSeconds = initSeconds;
   int pomodoroCnt = 0;
   bool isRunning = false;
@@ -43,6 +44,12 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  String formatSeconds(int totalSeconds) {
+    String padZero(int n) => n.toString().padLeft(2, "0");
+
+    return "${padZero(totalSeconds ~/ 60)}:${padZero(totalSeconds % 60)}";
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,7 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Container(
               alignment: Alignment.bottomCenter,
               child: Text(
-                "${(totalSeconds / 60).floor().toString().padLeft(2, '0')}:${(totalSeconds % 60).toString().padLeft(2, '0')}",
+                formatSeconds(totalSeconds),
                 style: TextStyle(
                   color: Theme.of(context).cardColor,
                   fontSize: 90,
