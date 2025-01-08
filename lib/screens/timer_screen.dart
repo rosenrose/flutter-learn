@@ -1,15 +1,34 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class TimerApp extends StatelessWidget {
+  const TimerApp({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      theme: ThemeData(
+        scaffoldBackgroundColor: const Color(0xFFE7626C),
+        textTheme: const TextTheme(
+          headlineMedium: TextStyle(
+            color: Color(0xFF232B55),
+          ),
+        ),
+        cardColor: const Color(0xFFF4EDDB),
+      ),
+      home: const TimerScreen(),
+    );
+  }
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class TimerScreen extends StatefulWidget {
+  const TimerScreen({super.key});
+
+  @override
+  State<TimerScreen> createState() => _TimerScreenState();
+}
+
+class _TimerScreenState extends State<TimerScreen> {
   static const int initSeconds = 25 * 60;
 
   int totalSeconds = initSeconds;
@@ -19,7 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void onTimerPressed() {
     if (isRunning) {
-      cancelTimer();
+      stopTimer();
       return;
     }
 
@@ -30,7 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  void cancelTimer() {
+  void stopTimer() {
     timer.cancel();
     setState(() {
       isRunning = false;
@@ -53,7 +72,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void onTimerReset() {
-    cancelTimer();
+    stopTimer();
     setState(() {
       totalSeconds = initSeconds;
     });
