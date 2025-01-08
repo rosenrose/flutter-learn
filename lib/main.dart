@@ -1,9 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_learn/screens/home_screen.dart';
+import 'package:flutter_learn/screens/currency_screen.dart';
 
 void main() {
-  runApp(const App());
+  runApp(const CurrencyApp());
 }
 
 class App extends StatelessWidget {
