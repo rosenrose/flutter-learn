@@ -51,9 +51,17 @@ class WebtoonScreen extends StatelessWidget {
             );
           }
 
-          return ListView(children: [
-            for (var webtoon in snapshot.data!) Text(webtoon.title)
-          ]);
+          final List<WebtoonModel> webtoons = snapshot.data!;
+
+          return ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: webtoons.length,
+            itemBuilder: (context, idx) {
+              WebtoonModel webtoon = webtoons[idx];
+              print(idx);
+              return Text("($idx)${webtoon.title} / ");
+            },
+          );
         },
       ),
     );
