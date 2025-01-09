@@ -45,11 +45,15 @@ class WebtoonScreen extends StatelessWidget {
             return const Text("Error!");
           }
 
-          if (snapshot.hasData) {
-            return const Text("Done");
+          if (!snapshot.hasData) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
           }
 
-          return const Text("Loading...");
+          return ListView(children: [
+            for (var webtoon in snapshot.data!) Text(webtoon.title)
+          ]);
         },
       ),
     );
