@@ -53,13 +53,24 @@ class WebtoonScreen extends StatelessWidget {
 
           final List<WebtoonModel> webtoons = snapshot.data!;
 
-          return ListView.builder(
+          return ListView.separated(
             scrollDirection: Axis.horizontal,
             itemCount: webtoons.length,
             itemBuilder: (context, idx) {
               WebtoonModel webtoon = webtoons[idx];
               print(idx);
-              return Text("($idx)${webtoon.title} / ");
+              return Column(
+                children: [
+                  Text("item$idx"),
+                  Text(webtoon.title),
+                ],
+              );
+            },
+            separatorBuilder: (context, idx) {
+              return DecoratedBox(
+                decoration: const BoxDecoration(color: Colors.green),
+                child: Text("sep$idx"),
+              );
             },
           );
         },
