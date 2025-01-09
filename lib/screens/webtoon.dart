@@ -7,42 +7,20 @@ class WebtoonApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       home: WebtoonScreen(),
     );
   }
 }
 
-class WebtoonScreen extends StatefulWidget {
-  const WebtoonScreen({super.key});
+class WebtoonScreen extends StatelessWidget {
+  WebtoonScreen({super.key});
 
-  @override
-  State<WebtoonScreen> createState() => _WebtoonScreenState();
-}
-
-class _WebtoonScreenState extends State<WebtoonScreen> {
-  List<WebtoonModel> webtoonModels = [];
-  bool isLoading = true;
-
-  @override
-  void initState() {
-    super.initState();
-    waitForWebtoons();
-  }
-
-  void waitForWebtoons() async {
-    webtoonModels = await ApiService.getTodayWebtoons();
-
-    setState(() {
-      isLoading = false;
-    });
-  }
+  final Future<List<WebtoonModel>> webtoons = ApiService.getTodayWebtoons();
 
   @override
   Widget build(BuildContext context) {
     // ApiService().getTodayWebtoons();
-    print(webtoonModels);
-    print(isLoading);
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -59,6 +37,20 @@ class _WebtoonScreenState extends State<WebtoonScreen> {
             ),
           ),
         ),
+      ),
+      body: FutureBuilder(
+        future: webtoons,
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return const Text("Error!");
+          }
+
+          if (snapshot.hasData) {
+            return const Text("Done");
+          }
+
+          return const Text("Loading...");
+        },
       ),
     );
   }

@@ -8,6 +8,7 @@ class ApiService {
   static const String today = "/today";
 
   static Future<List<WebtoonModel>> getTodayWebtoons() async {
+    await Future.delayed(const Duration(seconds: 1));
     final http.Response res = await http.get(Uri.parse("$baseUrl$today"));
 
     if (res.statusCode != 200) {
