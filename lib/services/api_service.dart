@@ -19,12 +19,9 @@ class ApiService {
       throw Exception("Failed to load today's webtoons");
     }
 
-    final List<WebtoonModel> webtoonModels = [];
     final List<dynamic> webtoons = jsonDecode(res.body);
-
-    for (var webtoon in webtoons) {
-      webtoonModels.add(WebtoonModel.fromJson(webtoon));
-    }
+    final List<WebtoonModel> webtoonModels =
+        webtoons.map((webtoon) => WebtoonModel.fromJson(webtoon)).toList();
 
     return webtoonModels;
   }

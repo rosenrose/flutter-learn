@@ -25,7 +25,7 @@ class WebtoonCard extends StatelessWidget {
       },
       child: Column(
         children: [
-          WebtoonThumb(thumbSrc: webtoon.thumb),
+          WebtoonThumb(webtoon: webtoon),
           const SizedBox(
             height: 10,
           ),

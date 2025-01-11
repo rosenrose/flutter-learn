@@ -32,7 +32,7 @@ class WebtoonDetail extends StatelessWidget {
             height: 20,
           ),
           Center(
-            child: WebtoonThumb(thumbSrc: webtoon.thumb),
+            child: WebtoonThumb(webtoon: webtoon),
           )
         ],
       ),
