@@ -51,27 +51,63 @@ class WebtoonScreen extends StatelessWidget {
             );
           }
 
-          final List<WebtoonModel> webtoons = snapshot.data!;
+          return Column(
+            children: [
+              const SizedBox(
+                height: 50,
+              ),
+              makeList(snapshot.data!),
+            ],
+          );
+        },
+      ),
+    );
+  }
 
-          return ListView.separated(
-            scrollDirection: Axis.horizontal,
-            itemCount: webtoons.length,
-            itemBuilder: (context, idx) {
-              WebtoonModel webtoon = webtoons[idx];
-              print(idx);
-              return Column(
-                children: [
-                  Text("item$idx"),
-                  Text(webtoon.title),
-                ],
-              );
-            },
-            separatorBuilder: (context, idx) {
-              return DecoratedBox(
-                decoration: const BoxDecoration(color: Colors.green),
-                child: Text("sep$idx"),
-              );
-            },
+  Expanded makeList(List<WebtoonModel> webtoons) {
+    return Expanded(
+      child: ListView.separated(
+        scrollDirection: Axis.horizontal,
+        padding: const EdgeInsets.all(10),
+        itemCount: webtoons.length,
+        itemBuilder: (context, idx) {
+          WebtoonModel webtoon = webtoons[idx];
+
+          return Column(
+            children: [
+              Container(
+                width: 200,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: const [
+                    BoxShadow(
+                        blurRadius: 5,
+                        offset: Offset(10, 10),
+                        color: Colors.black38)
+                  ],
+                ),
+                clipBehavior: Clip.hardEdge,
+                child: Image.network(
+                  webtoon.thumb,
+                  headers: const {
+                    "User-Agent":
+                        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+                  },
+                ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Text(webtoon.title,
+                  style: const TextStyle(
+                    fontSize: 14,
+                  )),
+            ],
+          );
+        },
+        separatorBuilder: (context, idx) {
+          return const SizedBox(
+            width: 40,
           );
         },
       ),
