@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_learn/models/webtoon_today.dart';
+import 'package:flutter_learn/models/webtoon_detail.dart';
 import 'package:flutter_learn/models/webtoon_episode.dart';
-import 'package:flutter_learn/screens/webtoon_home.dart';
 import 'package:flutter_learn/services/api_service.dart';
 import 'package:flutter_learn/widgets/webtoon_thumb.dart';
 import 'package:flutter_learn/widgets/webtoon_appbar.dart';
 
-class WebtoonDetail extends StatelessWidget {
+class WebtoonDetail extends StatefulWidget {
   final WebtoonTodayModel webtoon;
 
   const WebtoonDetail({
@@ -15,12 +15,27 @@ class WebtoonDetail extends StatelessWidget {
   });
 
   @override
+  State<WebtoonDetail> createState() => _WebtoonDetailState();
+}
+
+class _WebtoonDetailState extends State<WebtoonDetail> {
+  late Future<WebtoonDetailModel> webtoonDetail;
+  late Future<List<WebtoonEpisodeModel>> webtoonEpisodes;
+
+  @override
+  void initState() {
+    super.initState();
+    webtoonDetail = ApiService.getWebtoonDetailById(widget.webtoon.id);
+    webtoonEpisodes = ApiService.getWebtoonEpisodesById(widget.webtoon.id);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: WebtoonAppBar(
         title: Text(
-          webtoon.title,
+          widget.webtoon.title,
           style: const TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.w500,
@@ -33,10 +48,10 @@ class WebtoonDetail extends StatelessWidget {
             height: 20,
           ),
           Center(
-            child: WebtoonThumb(webtoon: webtoon),
+            child: WebtoonThumb(webtoon: widget.webtoon),
           ),
           FutureBuilder(
-            future: ApiService.getWebtoonDetailById(webtoon.id),
+            future: webtoonDetail,
             builder: (context, snapshot) {
               if (snapshot.hasError) {
                 return const Text("getWebtoonDetailById error");
@@ -62,7 +77,7 @@ class WebtoonDetail extends StatelessWidget {
             height: 20,
           ),
           FutureBuilder(
-            future: ApiService.getEpisodesById(webtoon.id),
+            future: webtoonEpisodes,
             builder: (context, snapshot) {
               if (snapshot.hasError) {
                 return const Text("getEpisodesById error");

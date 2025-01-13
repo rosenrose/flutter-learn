@@ -41,7 +41,8 @@ class ApiService {
     return webtoonDetail;
   }
 
-  static Future<List<WebtoonEpisodeModel>> getEpisodesById(String id) async {
+  static Future<List<WebtoonEpisodeModel>> getWebtoonEpisodesById(
+      String id) async {
     final Future<http.Response> req =
         http.get(Uri.parse("$baseUrl/$id/episodes"));
     final http.Response res = await req;
