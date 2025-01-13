@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_learn/services/api_service.dart';
-import 'package:flutter_learn/models/webtoon.dart';
+import 'package:flutter_learn/models/webtoon_today.dart';
 import 'package:flutter_learn/widgets/webtoon_card.dart';
+import 'package:flutter_learn/widgets/webtoon_appbar.dart';
 
 class WebtoonApp extends StatelessWidget {
   const WebtoonApp({super.key});
@@ -17,17 +18,15 @@ class WebtoonApp extends StatelessWidget {
 class WebtoonScreen extends StatelessWidget {
   WebtoonScreen({super.key});
 
-  final Future<List<WebtoonModel>> webtoons = ApiService.getTodayWebtoons();
+  final Future<List<WebtoonTodayModel>> webtoons =
+      ApiService.getTodayWebtoons();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.greenAccent,
-        elevation: 2,
-        title: const Center(
+      appBar: const WebtoonAppBar(
+        title: Center(
           child: Text(
             "Today's Webtoons",
             style: TextStyle(
@@ -41,7 +40,7 @@ class WebtoonScreen extends StatelessWidget {
         future: webtoons,
         builder: (context, snapshot) {
           if (snapshot.hasError) {
-            return const Text("Error!");
+            return const Text("getTodayWebtoons error");
           }
 
           if (!snapshot.hasData) {
@@ -55,7 +54,7 @@ class WebtoonScreen extends StatelessWidget {
               const SizedBox(
                 height: 50,
               ),
-              makeList(snapshot.data!),
+              makeTodayWebtoonList(snapshot.data!),
             ],
           );
         },
@@ -63,7 +62,7 @@ class WebtoonScreen extends StatelessWidget {
     );
   }
 
-  Expanded makeList(List<WebtoonModel> webtoons) {
+  Expanded makeTodayWebtoonList(List<WebtoonTodayModel> webtoons) {
     return Expanded(
       child: ListView.separated(
         scrollDirection: Axis.horizontal,

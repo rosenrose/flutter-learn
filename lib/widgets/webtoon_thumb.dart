@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_learn/models/webtoon.dart';
+import 'package:flutter_learn/models/webtoon_today.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class WebtoonThumb extends StatelessWidget {
-  final WebtoonModel webtoon;
+  final WebtoonTodayModel webtoon;
 
   const WebtoonThumb({
     super.key,

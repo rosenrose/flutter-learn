@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_learn/models/webtoon.dart';
+import 'package:flutter_learn/models/webtoon_today.dart';
 import 'package:flutter_learn/screens/webtoon_detail.dart';
 import 'package:flutter_learn/widgets/webtoon_thumb.dart';
 
 class WebtoonCard extends StatelessWidget {
-  final WebtoonModel webtoon;
+  final WebtoonTodayModel webtoon;
 
   const WebtoonCard({
     super.key,
@@ -27,7 +27,7 @@ class WebtoonCard extends StatelessWidget {
         children: [
           WebtoonThumb(webtoon: webtoon),
           const SizedBox(
-            height: 10,
+            height: 20,
           ),
           Text(webtoon.title,
               style: const TextStyle(

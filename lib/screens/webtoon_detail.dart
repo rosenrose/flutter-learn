@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_learn/models/webtoon.dart';
+import 'package:flutter_learn/models/webtoon_today.dart';
+import 'package:flutter_learn/models/webtoon_episode.dart';
+import 'package:flutter_learn/screens/webtoon_home.dart';
+import 'package:flutter_learn/services/api_service.dart';
 import 'package:flutter_learn/widgets/webtoon_thumb.dart';
+import 'package:flutter_learn/widgets/webtoon_appbar.dart';
 
 class WebtoonDetail extends StatelessWidget {
-  final WebtoonModel webtoon;
+  final WebtoonTodayModel webtoon;
 
   const WebtoonDetail({
     super.key,
@@ -14,10 +18,7 @@ class WebtoonDetail extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.greenAccent,
-        elevation: 2,
+      appBar: WebtoonAppBar(
         title: Text(
           webtoon.title,
           style: const TextStyle(
@@ -33,8 +34,81 @@ class WebtoonDetail extends StatelessWidget {
           ),
           Center(
             child: WebtoonThumb(webtoon: webtoon),
-          )
+          ),
+          FutureBuilder(
+            future: ApiService.getWebtoonDetailById(webtoon.id),
+            builder: (context, snapshot) {
+              if (snapshot.hasError) {
+                return const Text("getWebtoonDetailById error");
+              }
+
+              if (!snapshot.hasData) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+
+              return Column(
+                children: [
+                  Text(snapshot.data!.title),
+                  Text(snapshot.data!.about),
+                  Text(snapshot.data!.genre),
+                  Text(snapshot.data!.age),
+                ],
+              );
+            },
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          FutureBuilder(
+            future: ApiService.getEpisodesById(webtoon.id),
+            builder: (context, snapshot) {
+              if (snapshot.hasError) {
+                return const Text("getEpisodesById error");
+              }
+
+              if (!snapshot.hasData) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+
+              return Column(
+                children: [
+                  const SizedBox(
+                    height: 50,
+                  ),
+                  makeEpisodeList(snapshot.data!),
+                ],
+              );
+            },
+          ),
         ],
+      ),
+    );
+  }
+
+  Expanded makeEpisodeList(List<WebtoonEpisodeModel> episodes) {
+    return Expanded(
+      child: ListView.separated(
+        scrollDirection: Axis.vertical,
+        padding: const EdgeInsets.all(10),
+        itemCount: episodes.length,
+        itemBuilder: (context, idx) {
+          return Row(
+            children: [
+              Text(episodes[idx].title),
+              Text(episodes[idx].rating),
+              Text(episodes[idx].date),
+            ],
+          );
+        },
+        separatorBuilder: (context, idx) {
+          return const SizedBox(
+            width: 10,
+          );
+        },
       ),
     );
   }
