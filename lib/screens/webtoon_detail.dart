@@ -50,6 +50,9 @@ class _WebtoonDetailState extends State<WebtoonDetail> {
           Center(
             child: WebtoonThumb(webtoon: widget.webtoon),
           ),
+          const SizedBox(
+            height: 25,
+          ),
           FutureBuilder(
             future: webtoonDetail,
             builder: (context, snapshot) {
@@ -63,13 +66,33 @@ class _WebtoonDetailState extends State<WebtoonDetail> {
                 );
               }
 
-              return Column(
-                children: [
-                  Text(snapshot.data!.title),
-                  Text(snapshot.data!.about),
-                  Text(snapshot.data!.genre),
-                  Text(snapshot.data!.age),
-                ],
+              final WebtoonDetailModel detail = snapshot.data!;
+
+              return Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      detail.title,
+                      style: const TextStyle(
+                        fontSize: 22,
+                      ),
+                    ),
+                    Text(detail.about),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    Text(
+                      "${detail.genre} / ${detail.age}",
+                      style: const TextStyle(
+                        fontSize: 16,
+                      ),
+                    ),
+                  ],
+                ),
               );
             },
           ),
