@@ -42,37 +42,35 @@ class _WebtoonDetailState extends State<WebtoonDetail> {
           ),
         ),
       ),
-      body: Column(
-        children: [
-          const SizedBox(
-            height: 20,
-          ),
-          Center(
-            child: WebtoonThumb(webtoon: widget.webtoon),
-          ),
-          const SizedBox(
-            height: 25,
-          ),
-          FutureBuilder(
-            future: webtoonDetail,
-            builder: (context, snapshot) {
-              if (snapshot.hasError) {
-                return const Text("getWebtoonDetailById error");
-              }
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 25,
+          vertical: 30,
+        ),
+        child: Column(
+          children: [
+            Center(
+              child: WebtoonThumb(webtoon: widget.webtoon),
+            ),
+            const SizedBox(
+              height: 25,
+            ),
+            FutureBuilder(
+              future: webtoonDetail,
+              builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  return const Text("getWebtoonDetailById error");
+                }
 
-              if (!snapshot.hasData) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
+                if (!snapshot.hasData) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
 
-              final WebtoonDetailModel detail = snapshot.data!;
+                final WebtoonDetailModel detail = snapshot.data!;
 
-              return Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                ),
-                child: Column(
+                return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
@@ -85,69 +83,75 @@ class _WebtoonDetailState extends State<WebtoonDetail> {
                     const SizedBox(
                       height: 15,
                     ),
-                    Text(
-                      "${detail.genre} / ${detail.age}",
-                      style: const TextStyle(
-                        fontSize: 16,
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text("${detail.genre} / ${detail.age}"),
+                      ],
                     ),
                   ],
-                ),
-              );
-            },
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          FutureBuilder(
-            future: webtoonEpisodes,
-            builder: (context, snapshot) {
-              if (snapshot.hasError) {
-                return const Text("getEpisodesById error");
-              }
-
-              if (!snapshot.hasData) {
-                return const Center(
-                  child: CircularProgressIndicator(),
                 );
-              }
+              },
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+            FutureBuilder(
+              future: webtoonEpisodes,
+              builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  return const Text("getEpisodesById error");
+                }
 
-              return Column(
-                children: [
-                  const SizedBox(
-                    height: 50,
-                  ),
-                  makeEpisodeList(snapshot.data!),
-                ],
-              );
-            },
-          ),
-        ],
+                if (!snapshot.hasData) {
+                  return Center(
+                    child: Container(),
+                  );
+                }
+
+                return makeEpisodeList(snapshot.data!);
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
 
-  Expanded makeEpisodeList(List<WebtoonEpisodeModel> episodes) {
-    return Expanded(
-      child: ListView.separated(
-        scrollDirection: Axis.vertical,
-        padding: const EdgeInsets.all(10),
-        itemCount: episodes.length,
-        itemBuilder: (context, idx) {
-          return Row(
-            children: [
-              Text(episodes[idx].title),
-              Text(episodes[idx].rating),
-              Text(episodes[idx].date),
-            ],
-          );
-        },
-        separatorBuilder: (context, idx) {
-          return const SizedBox(
-            width: 10,
-          );
-        },
-      ),
+  Column makeEpisodeList(List<WebtoonEpisodeModel> episodes) {
+    return Column(
+      children: [
+        for (var episode in episodes)
+          Container(
+            margin: const EdgeInsets.only(bottom: 10),
+            decoration: BoxDecoration(
+              color: Colors.green.shade400,
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                vertical: 10,
+                horizontal: 10,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    episode.title,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                    ),
+                  ),
+                  const Icon(
+                    Icons.chevron_right,
+                    color: Colors.white,
+                  ),
+                ],
+              ),
+            ),
+          ),
+      ],
     );
   }
 }
