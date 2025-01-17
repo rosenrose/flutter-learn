@@ -6,6 +6,7 @@ import 'package:flutter_learn/services/api_service.dart';
 import 'package:flutter_learn/widgets/webtoon_appbar.dart';
 import 'package:flutter_learn/widgets/webtoon_episode.dart';
 import 'package:flutter_learn/widgets/webtoon_thumb.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class WebtoonDetail extends StatefulWidget {
@@ -23,12 +24,47 @@ class WebtoonDetail extends StatefulWidget {
 class _WebtoonDetailState extends State<WebtoonDetail> {
   late Future<WebtoonDetailModel> webtoonDetail;
   late Future<List<WebtoonEpisodeModel>> webtoonEpisodes;
+  late SharedPreferences favorites;
+  bool isLike = false;
+  static const String likedKey = "liked";
 
   @override
   void initState() {
     super.initState();
     webtoonDetail = ApiService.getWebtoonDetailById(widget.webtoon.id);
     webtoonEpisodes = ApiService.getWebtoonEpisodesById(widget.webtoon.id);
+    initPrefs();
+  }
+
+  void initPrefs() async {
+    favorites = await SharedPreferences.getInstance();
+    final List<String>? likedToons = favorites.getStringList(likedKey);
+    print(likedToons);
+
+    if (likedToons == null) {
+      await favorites.setStringList("liked", []);
+      return;
+    }
+
+    setState(() {
+      isLike = likedToons.contains(widget.webtoon.id);
+    });
+  }
+
+  void toggleLike() async {
+    final List<String> likedToons = favorites.getStringList(likedKey)!;
+
+    if (isLike) {
+      likedToons.remove(widget.webtoon.id);
+    } else {
+      likedToons.add(widget.webtoon.id);
+    }
+
+    setState(() {
+      isLike = !isLike;
+    });
+
+    await favorites.setStringList(likedKey, likedToons);
   }
 
   @override
@@ -43,6 +79,13 @@ class _WebtoonDetailState extends State<WebtoonDetail> {
             fontWeight: FontWeight.w500,
           ),
         ),
+        actions: [
+          IconButton(
+            iconSize: 35,
+            onPressed: toggleLike,
+            icon: Icon(isLike ? Icons.favorite : Icons.favorite_outline),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(
