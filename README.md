@@ -13,6 +13,11 @@ winget install Oracle.JDK.17
 flutter config --jdk-dir "C:\Program Files\Java\jdk-17"
 ```
 
+APK 빌드
+```
+flutter build apk --release --target-platform=android-arm64
+```
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.
