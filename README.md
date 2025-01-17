@@ -7,6 +7,12 @@ cd android
 ./gradlew clean build
 ```
 
+url_launcher 오류 수정
+```
+winget install Oracle.JDK.17
+flutter config --jdk-dir "C:\Program Files\Java\jdk-17"
+```
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.

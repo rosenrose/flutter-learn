@@ -3,8 +3,10 @@ import 'package:flutter_learn/models/webtoon_today.dart';
 import 'package:flutter_learn/models/webtoon_detail.dart';
 import 'package:flutter_learn/models/webtoon_episode.dart';
 import 'package:flutter_learn/services/api_service.dart';
-import 'package:flutter_learn/widgets/webtoon_thumb.dart';
 import 'package:flutter_learn/widgets/webtoon_appbar.dart';
+import 'package:flutter_learn/widgets/webtoon_episode.dart';
+import 'package:flutter_learn/widgets/webtoon_thumb.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class WebtoonDetail extends StatefulWidget {
   final WebtoonTodayModel webtoon;
@@ -49,8 +51,12 @@ class _WebtoonDetailState extends State<WebtoonDetail> {
         ),
         child: Column(
           children: [
-            Center(
-              child: WebtoonThumb(webtoon: widget.webtoon),
+            GestureDetector(
+              onTap: () => launchUrlString(
+                  "https://comic.naver.com/webtoon/list?titleId=${widget.webtoon.id}"),
+              child: Center(
+                child: WebtoonThumb(webtoon: widget.webtoon),
+              ),
             ),
             const SizedBox(
               height: 25,
@@ -109,49 +115,18 @@ class _WebtoonDetailState extends State<WebtoonDetail> {
                   );
                 }
 
-                return makeEpisodeList(snapshot.data!);
+                return Column(
+                  children: [
+                    for (var episode in snapshot.data!)
+                      WebtoonEpisode(
+                          webtoonId: widget.webtoon.id, episode: episode),
+                  ],
+                );
               },
             ),
           ],
         ),
       ),
-    );
-  }
-
-  Column makeEpisodeList(List<WebtoonEpisodeModel> episodes) {
-    return Column(
-      children: [
-        for (var episode in episodes)
-          Container(
-            margin: const EdgeInsets.only(bottom: 10),
-            decoration: BoxDecoration(
-              color: Colors.green.shade400,
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(
-                vertical: 10,
-                horizontal: 10,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    episode.title,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                    ),
-                  ),
-                  const Icon(
-                    Icons.chevron_right,
-                    color: Colors.white,
-                  ),
-                ],
-              ),
-            ),
-          ),
-      ],
     );
   }
 }
